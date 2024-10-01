@@ -1,0 +1,33 @@
+version: "3.1"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    entrypoint: sh -c  "npm install && npm run start:dev"
+    restart: always
+    depends_on:
+      - db
+    networks: 
+      - api-network
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+networks:
+  api-network:
