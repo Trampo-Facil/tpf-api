@@ -1,33 +1,20 @@
-version: "3.1"
-
 services:
-  api:
+  tpf_api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api
-    entrypoint: sh -c  "npm install && npm run start:dev"
-    restart: always
-    depends_on:
-      - db
-    networks: 
-      - api-network
     ports:
-      - "${PORT}:${PORT}"
+      - "3000:3000"
     volumes:
-      - .:/app
-      - /app/node_modules
-
-  db:
-    image: mariadb:latest
-    container_name: mariadb
-    restart: always
-    environment:
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      - ./src:/usr/src/api/src
+  
+  tpf_db:
+    image: mysql
     ports:
-      - ${DB_PORT}:${DB_PORT}
-
-networks:
-  api-network:
+      - '${DB_PORT}:${DB_PORT}'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_TCP_PORT: ${DB_PORT}
