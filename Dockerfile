@@ -1,13 +1,13 @@
-FROM node:20
+FROM node:latest
 
-WORKDIR /app
+WORKDIR /usr/src/api
 
-COPY package*.json /app
+COPY . .
 
-RUN npm cache clean \
-    rm -rf node_modules \
-    npm install
+RUN npm install --quiet --no-optional --no-fund --loglevel=error
 
-COPY . /app
+RUN npm run build
 
 EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
