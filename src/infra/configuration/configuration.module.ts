@@ -1,6 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from '.';
+import { factoryValidate } from './validation';
 
 @Module({})
 export class ConfigurationModule {
@@ -14,6 +15,7 @@ export class ConfigurationModule {
           envFilePath:
             process.env.NODE_ENV === 'production' ? '.env' : '.env.development',
           load: [configuration],
+          validate: factoryValidate(),
         }),
       ],
       global: true,

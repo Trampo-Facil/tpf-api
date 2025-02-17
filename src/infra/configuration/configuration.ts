@@ -1,3 +1,5 @@
+import * as process from 'process';
+
 export interface IConfiguration {
   env: string;
   database: {

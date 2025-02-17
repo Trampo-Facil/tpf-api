@@ -1,1 +1,1 @@
-export * from './heath-check.controller';
+export * from './database.health-check';
