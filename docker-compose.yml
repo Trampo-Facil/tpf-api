@@ -7,6 +7,8 @@ services:
       - "${PORT}:${PORT}"
     volumes:
       - ./src:/usr/src/api/src
+    depends_on:
+      - tpf_db
   
   tpf_db:
     image: mysql
