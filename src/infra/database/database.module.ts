@@ -6,6 +6,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 export class DatabaseModule {
   static register(): DynamicModule {
     const factory = (configService: ConfigService): TypeOrmModuleOptions => {
+      const isProduction = configService.get<string>('env') === 'production';
       return {
         type: 'mysql',
         host: configService.get<string>('database.host'),
@@ -14,7 +15,7 @@ export class DatabaseModule {
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
         entities: [],
-        synchronize: true,
+        synchronize: isProduction,
       };
     };
 
