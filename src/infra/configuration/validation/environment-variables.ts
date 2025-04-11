@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { EEnvironment } from 'src/core/common/enums';
+import { EEnvironment } from 'src/common/enums';
 
 abstract class IEnvironmentVariables {
   @IsEnum(EEnvironment)

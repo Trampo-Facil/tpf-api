@@ -6,7 +6,6 @@ import {
   DatabaseModule,
 } from '.';
 import { TerminusModule } from '@nestjs/terminus';
-import { CoreCommonModule } from 'src/core/common/core-common.module';
 import { CoreAuthModule } from 'src/core/auth/core-auth.module';
 import { CoreMarketplaceModule } from 'src/core/marketplace/core-marketplace.module';
 import { CoreAnalyticsModule } from 'src/core/analytics/core-analytics.module';
@@ -16,7 +15,6 @@ import { CoreAnalyticsModule } from 'src/core/analytics/core-analytics.module';
     ConfigurationModule.register(),
     DatabaseModule.register(),
     TerminusModule,
-    CoreCommonModule,
     CoreAuthModule,
     CoreMarketplaceModule,
     CoreAnalyticsModule,
