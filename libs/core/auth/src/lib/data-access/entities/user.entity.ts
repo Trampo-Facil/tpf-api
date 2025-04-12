@@ -1,28 +1,23 @@
-import {
-  Collection,
-  Entity,
-  ManyToMany,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
-import {
-  IJobCategory,
-  IJobOccupation,
-  JobCategory,
-  JobOccupation,
-} from '@tpf/common';
+import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { IWorker, Worker } from './worker.entity';
 
+export interface ICreateUserEntityDTO {
+  name: string;
+  password: string;
+  email: string;
+}
 export abstract class IUser {
-  id!: number;
-  name!: string;
-  password!: string;
-  email!: string;
-  jobOccupation?: Collection<IJobOccupation>;
-  jobCategory?: Collection<IJobCategory>;
+  abstract id: number;
+  abstract name: string;
+  abstract password: string;
+  abstract email: string;
+  abstract worker?: IWorker;
+
+  abstract setWorker(worker: IWorker): void;
 }
 
 @Entity({ tableName: 'user' })
-export class User {
+export class User implements IUser {
   @PrimaryKey()
   readonly id!: number;
 
@@ -35,23 +30,24 @@ export class User {
   @Property({ unique: true })
   email!: string;
 
-  @ManyToMany(() => JobOccupation)
-  jobOccupation? = new Collection<IJobOccupation>(this);
+  // @OneToOne(() => Client, (client) => client.user, { nullable: true })
+  // client?: Client;
 
-  @ManyToMany(() => JobCategory)
-  jobCategory? = new Collection<IJobCategory>(this);
+  @OneToOne(() => Worker, { joinColumn: 'worker_id', nullable: true })
+  worker?: IWorker;
 
-  constructor(
-    name: string,
-    password: string,
-    email: string,
-    jobOccupation?: IJobOccupation[],
-    occupationZone?: IJobCategory[],
-  ) {
+  constructor(props: ICreateUserEntityDTO) {
+    const { name, password, email } = props;
     this.name = name;
     this.password = password;
     this.email = email;
-    this.jobOccupation = new Collection<IJobOccupation>(this, jobOccupation);
-    this.jobCategory = new Collection<IJobCategory>(this, occupationZone);
+  }
+
+  static create(props: ICreateUserEntityDTO): IUser {
+    return new User(props);
+  }
+
+  setWorker(worker: IWorker) {
+    this.worker = worker;
   }
 }
