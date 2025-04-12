@@ -6,7 +6,8 @@ services:
     ports:
       - "${PORT}:${PORT}"
     volumes:
-      - ./libs:/usr/src/api/src
+      - ./:/usr/src
+      - /usr/src/node_modules
     depends_on:
       - tpf_db
   

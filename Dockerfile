@@ -1,10 +1,12 @@
 FROM node:latest
 
-WORKDIR /usr/src/api
+WORKDIR /usr/src
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install --quiet --no-optional --no-fund --loglevel=error
+
+COPY . .
 
 RUN npm run build
 
