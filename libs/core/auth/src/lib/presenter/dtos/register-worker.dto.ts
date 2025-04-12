@@ -8,14 +8,15 @@ import {
   ArrayNotEmpty,
   IsInt,
   Min,
+  IsPhoneNumber,
 } from 'class-validator';
 
 export interface IRegisterWorkerDTO {
   name: string;
   password: string;
   email: string;
+  phone: string;
   jobOccupationIds: number[];
-  jobCategoryIds: number[];
   operationCitiesIds: number[];
 }
 
@@ -30,6 +31,12 @@ export abstract class RegisterWorkerDTO implements IRegisterWorkerDTO {
   @IsNotEmpty()
   email!: string;
 
+  @ApiProperty({ example: '5511999999999' })
+  @IsPhoneNumber('BR')
+  @IsNotEmpty()
+  @IsString()
+  phone!: string;
+
   @ApiProperty({ example: 'StrongP@ssw0rd' })
   @IsString()
   @IsNotEmpty()
@@ -42,13 +49,6 @@ export abstract class RegisterWorkerDTO implements IRegisterWorkerDTO {
   @IsInt({ each: true })
   @Min(1, { each: true })
   jobOccupationIds!: number[];
-
-  @ApiProperty({ example: [4, 5, 6] })
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsInt({ each: true })
-  @Min(1, { each: true })
-  jobCategoryIds!: number[];
 
   @ApiProperty({ example: [7, 8, 9] })
   @IsArray()

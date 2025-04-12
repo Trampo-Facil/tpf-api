@@ -5,20 +5,12 @@ import {
   OneToOne,
   PrimaryKey,
 } from '@mikro-orm/core';
-import {
-  City,
-  ICity,
-  IJobCategory,
-  IJobOccupation,
-  JobCategory,
-  JobOccupation,
-} from '@tpf/common';
+import { City, ICity, IJobOccupation, JobOccupation } from '@tpf/common';
 import { IUser, User } from './user.entity';
 
 export interface ICreateWorkerEntityDTO {
   user: IUser;
   jobOccupations?: IJobOccupation[];
-  jobCategories?: IJobCategory[];
   operationCities?: ICity[];
 }
 
@@ -26,7 +18,6 @@ export abstract class IWorker {
   id!: number;
   user?: IUser;
   jobOccupations: Collection<IJobOccupation>;
-  jobCategories: Collection<IJobCategory>;
   operationCities: Collection<City>;
 }
 
@@ -45,13 +36,6 @@ export class Worker implements IWorker {
   })
   jobOccupations = new Collection<IJobOccupation>(this);
 
-  @ManyToMany(() => JobCategory, undefined, {
-    pivotTable: 'worker_job_categories',
-    joinColumn: 'worker_id',
-    inverseJoinColumn: 'job_category_id',
-  })
-  jobCategories = new Collection<IJobCategory>(this);
-
   @ManyToMany(() => City, undefined, {
     pivotTable: 'worker_operation_cities',
     joinColumn: 'worker_id',
@@ -60,10 +44,9 @@ export class Worker implements IWorker {
   operationCities = new Collection<ICity>(this);
 
   constructor(props: ICreateWorkerEntityDTO) {
-    const { user, jobOccupations, jobCategories, operationCities } = props;
+    const { user, jobOccupations, operationCities } = props;
     this.user = user;
     this.jobOccupations = new Collection<IJobOccupation>(this, jobOccupations);
-    this.jobCategories = new Collection<IJobCategory>(this, jobCategories);
     this.operationCities = new Collection<ICity>(this, operationCities);
   }
 

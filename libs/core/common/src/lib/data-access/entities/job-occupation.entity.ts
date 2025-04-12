@@ -1,8 +1,10 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { IJobCategory, JobCategory } from './job-category.entity';
 
 export abstract class IJobOccupation {
-  id!: number;
-  name!: string;
+  abstract id: number;
+  abstract name: string;
+  abstract category: IJobCategory;
 }
 
 @Entity({ tableName: 'job_occupation', readonly: true })
@@ -12,4 +14,7 @@ export class JobOccupation implements IJobOccupation {
 
   @Property()
   name!: string;
+
+  @ManyToOne(() => JobCategory, { fieldName: 'category_id' })
+  category!: IJobCategory;
 }

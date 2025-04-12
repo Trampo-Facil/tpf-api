@@ -1,13 +1,14 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IRegisterWorkerDTO } from '../../presenter/dtos';
 import { IUserRepository } from '../../data-access/repositories';
 import { IWorkerRepository } from '../../data-access/repositories/worker.repository';
-import {
-  ICityRepository,
-  IJobCategoryRepository,
-  IJobOccupationRepository,
-} from '@tpf/common';
-import { EntityManager } from '@mikro-orm/core';
+import { ICityRepository, IJobOccupationRepository } from '@tpf/common';
+import * as bcrypt from 'bcrypt';
 
 export abstract class IRegisterWorker {
   abstract execute(dto: IRegisterWorkerDTO): Promise<void | HttpException>;
@@ -15,34 +16,39 @@ export abstract class IRegisterWorker {
 
 @Injectable()
 export class RegisterWorker implements IRegisterWorker {
+  private readonly saltOrRounds = 10;
+
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly workerRepository: IWorkerRepository,
-    private readonly jobCategoryRepository: IJobCategoryRepository,
     private readonly jobOccupationRepository: IJobOccupationRepository,
     private readonly cityRepository: ICityRepository,
-    private readonly em: EntityManager,
   ) {}
 
   async execute(dto: IRegisterWorkerDTO): Promise<void | HttpException> {
     const {
       email,
+      phone,
       password,
       name,
-      jobCategoryIds,
       jobOccupationIds,
       operationCitiesIds,
     } = dto;
 
-    const [jobCategories, jobOccupations, operationCities] = await Promise.all([
-      this.jobCategoryRepository.getByIds(jobCategoryIds),
+    const [, usersWithSameData] = await this.userRepository.getUsersByParams({
+      email,
+      phone,
+    });
+
+    if (usersWithSameData)
+      return new ConflictException('Email ou telefone já estão cadastrados');
+
+    const [jobOccupations, operationCities] = await Promise.all([
       this.jobOccupationRepository.getByIds(jobOccupationIds),
       this.cityRepository.getByIds(operationCitiesIds),
     ]);
 
     const errors = [];
-    if (jobCategories.length !== jobCategoryIds.length)
-      errors.push('Categorias de trabalho não encontradas');
 
     if (jobOccupations.length !== jobOccupationIds.length)
       errors.push('Profissões de trabalho não encontradas');
@@ -52,25 +58,23 @@ export class RegisterWorker implements IRegisterWorker {
 
     if (errors.length) return new NotFoundException(errors.join('; '));
 
-    await this.em.transactional(async (em) => {
-      const user = this.userRepository.create({
-        email,
-        password,
-        name,
-      });
+    const passwordCrypted = await bcrypt.hash(password, this.saltOrRounds);
 
-      const worker = this.workerRepository.create({
-        user,
-        jobCategories,
-        jobOccupations,
-        operationCities,
-      });
-
-      user.setWorker(worker);
-
-      em.persist([user, worker]);
-
-      await em.flush();
+    const user = this.userRepository.create({
+      email,
+      password: passwordCrypted,
+      name,
+      phone,
     });
+
+    const worker = this.workerRepository.create({
+      user,
+      jobOccupations,
+      operationCities,
+    });
+
+    user.setWorker(worker);
+
+    await this.userRepository.saveWorkerUser(user, worker);
   }
 }

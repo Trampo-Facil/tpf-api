@@ -5,12 +5,14 @@ export interface ICreateUserEntityDTO {
   name: string;
   password: string;
   email: string;
+  phone: string;
 }
 export abstract class IUser {
   abstract id: number;
   abstract name: string;
   abstract password: string;
   abstract email: string;
+  abstract phone: string;
   abstract worker?: IWorker;
 
   abstract setWorker(worker: IWorker): void;
@@ -30,6 +32,9 @@ export class User implements IUser {
   @Property({ unique: true })
   email!: string;
 
+  @Property({ unique: true })
+  phone: string;
+
   // @OneToOne(() => Client, (client) => client.user, { nullable: true })
   // client?: Client;
 
@@ -37,10 +42,11 @@ export class User implements IUser {
   worker?: IWorker;
 
   constructor(props: ICreateUserEntityDTO) {
-    const { name, password, email } = props;
+    const { name, password, email, phone } = props;
     this.name = name;
     this.password = password;
     this.email = email;
+    this.phone = phone;
   }
 
   static create(props: ICreateUserEntityDTO): IUser {
