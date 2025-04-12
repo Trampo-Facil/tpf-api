@@ -16,7 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@tpf/common": ["libs/core/common/src"],
+      "@tpf/auth": ["libs/core/auth/src"],
+      "@tpf/marketplace": ["libs/core/marketplace/src"],
+      "@tpf/analytics": ["libs/core/analytics/src"],
+    }
   },
   "watchOptions": {
     "watchFile": "dynamicPriorityPolling",

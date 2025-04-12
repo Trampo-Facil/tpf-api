@@ -6,7 +6,7 @@ services:
     ports:
       - "${PORT}:${PORT}"
     volumes:
-      - ./src:/usr/src/api/src
+      - ./libs:/usr/src/api/src
     depends_on:
       - tpf_db
   
