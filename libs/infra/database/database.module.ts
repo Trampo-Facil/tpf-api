@@ -16,8 +16,6 @@ export class DatabaseModule {
         user: configService.get<string>('database.user'),
         password: configService.get<string>('database.password'),
         dbName: configService.get<string>('database.database'),
-        entities: [__dirname + './libs/**/*.entity.ts'],
-        entitiesTs: [__dirname + './libs/**/*.entity.ts'],
         autoLoadEntities: true,
         namingStrategy: EntityCaseNamingStrategy,
         debug: !isProduction,

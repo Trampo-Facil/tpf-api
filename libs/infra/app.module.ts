@@ -6,10 +6,10 @@ import {
   DatabaseModule,
 } from '.';
 import { TerminusModule } from '@nestjs/terminus';
-import { CoreMarketplaceModule } from 'libs/core/marketplace/core-marketplace.module';
-import { CoreAnalyticsModule } from 'libs/core/analytics/core-analytics.module';
 import { CoreCommonModule } from '@tpf/common';
 import { CoreAuthModule } from '@tpf/auth';
+import { CoreMarketplaceModule } from '@tpf/marketplace';
+import { CoreAnalyticsModule } from '@tpf/analytics';
 
 @Module({
   imports: [
