@@ -1,12 +1,12 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
-export interface ICity {
-  id: number;
-  name: string;
-  state: string;
-  country: string;
-  enabled: boolean;
-  ibgeId: number;
+export abstract class ICity {
+  id!: number;
+  name!: string;
+  state!: string;
+  country!: string;
+  enabled!: boolean;
+  ibgeId!: number;
 }
 
 @Entity({ tableName: 'city', readonly: true })
