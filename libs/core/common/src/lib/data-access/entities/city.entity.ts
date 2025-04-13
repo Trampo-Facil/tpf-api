@@ -4,9 +4,6 @@ export abstract class ICity {
   abstract id: number;
   abstract name: string;
   abstract state: string;
-  abstract country: string;
-  abstract enabled: boolean;
-  abstract ibgeId: number;
 }
 
 @Entity({ tableName: 'city', readonly: true })
@@ -20,12 +17,8 @@ export class City implements ICity {
   @Property()
   state!: string;
 
-  @Property()
-  country!: string;
-
-  @Property()
-  enabled!: boolean;
-
-  @Property()
-  ibgeId!: number;
+  constructor(props: { name: string; state: string }) {
+    this.name = props.name;
+    this.state = props.state;
+  }
 }

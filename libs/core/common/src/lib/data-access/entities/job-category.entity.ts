@@ -22,4 +22,8 @@ export class JobCategory implements IJobCategory {
 
   @OneToMany(() => JobOccupation, (jobOccupation) => jobOccupation.category)
   jobOccupations = new Collection<IJobOccupation>(this);
+
+  constructor(props: { name: string }) {
+    this.name = props.name;
+  }
 }

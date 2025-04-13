@@ -17,4 +17,9 @@ export class JobOccupation implements IJobOccupation {
 
   @ManyToOne(() => JobCategory, { fieldName: 'category_id' })
   category!: IJobCategory;
+
+  constructor(props: { name: string; category: IJobCategory }) {
+    this.name = props.name;
+    this.category = props.category;
+  }
 }

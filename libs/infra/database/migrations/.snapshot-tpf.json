@@ -32,36 +32,6 @@
           "nullable": false,
           "length": 255,
           "mappedType": "string"
-        },
-        "country": {
-          "name": "country",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "enabled": {
-          "name": "enabled",
-          "type": "tinyint(1)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 1,
-          "mappedType": "boolean"
-        },
-        "ibge_id": {
-          "name": "ibge_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "mappedType": "integer"
         }
       },
       "name": "city",
