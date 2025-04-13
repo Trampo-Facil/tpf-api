@@ -1,8 +1,4 @@
-import {
-  HttpException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { IUserRepository } from '../../data-access/repositories';
@@ -31,7 +27,7 @@ export class Login implements ILogin {
 
     const matchPassword = bcrypt.compareSync(password, user.password);
     if (!user || !matchPassword)
-      throw new NotFoundException(
+      return new NotFoundException(
         'Dados incorretos. Verifique os dados e tente novamente.',
       );
 
