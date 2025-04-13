@@ -17,8 +17,8 @@ Este é o repositório backend do projeto **Trampo Fácil**, construído com [Ne
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/TRAMPO-FACIL-GIT/tpf-backend
-cd tpf-backend
+git clone https://github.com/Trampo-Facil/tpf-api
+cd tpf-api
 ```
 
 ### 2. Instale as dependências
