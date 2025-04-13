@@ -15,14 +15,16 @@ export class GetCitiesByState {
   constructor(private readonly cityRepository: ICityRepository) {}
 
   async get(stateId: EStatesCode): Promise<IGetCitiesByStateResponseDTO[]> {
-    const cities = await this.cityRepository.getByStateId(stateId);
-    if (!cities) {
+    try {
+      const cities = await this.cityRepository.getByStateId(stateId);
+
+      return cities.map((city) => ({
+        id: city.id,
+        name: city.name,
+        state: city.state,
+      }));
+    } catch {
       return [];
     }
-    return cities.map((city) => ({
-      id: city.id,
-      name: city.name,
-      state: city.state,
-    }));
   }
 }

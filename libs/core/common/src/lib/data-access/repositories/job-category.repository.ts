@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 
 export abstract class IJobCategoryRepository {
   abstract getByIds(ids: number[]): Promise<IJobCategory[]>;
+  abstract getAll(): Promise<IJobCategory[]>;
 }
 
 @Injectable()
@@ -16,5 +17,9 @@ export class JobCategoryRepository implements IJobCategoryRepository {
 
   getByIds(ids: number[]): Promise<IJobCategory[]> {
     return this._repository.find({ id: { $in: ids } });
+  }
+
+  getAll(): Promise<IJobCategory[]> {
+    return this._repository.findAll();
   }
 }
