@@ -39,6 +39,14 @@ abstract class IEnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   DB_ROOT_PASSWORD!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_EXPIRATION!: string;
 }
 
 export class EnvironmentVariables extends IEnvironmentVariables {}

@@ -1,11 +1,12 @@
+import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import { ICreateUserEntityDTO, IUser, IWorker, User } from '../entities';
-import { EntityRepository, EntityManager } from '@mikro-orm/core';
 
 export abstract class IUserRepository {
   abstract create(dto: ICreateUserEntityDTO): IUser;
   abstract save(user: IUser[]): Promise<void>;
   abstract saveWorkerUser(user: IUser, worker: IWorker): Promise<void>;
+  abstract findUserByParams(params: Partial<IUser>): Promise<IUser | null>;
   abstract getUsersByParams(params: Partial<IUser>): Promise<[IUser[], number]>;
 }
 
@@ -28,6 +29,10 @@ export class UserRepository implements IUserRepository {
 
   saveWorkerUser(user: IUser, worker: IWorker): Promise<void> {
     return this.em.persistAndFlush([user, worker]);
+  }
+
+  findUserByParams(params: Partial<IUser>): Promise<IUser | null> {
+    return this._repository.findOne(params);
   }
 
   getUsersByParams(params: Partial<IUser>): Promise<[IUser[], number]> {

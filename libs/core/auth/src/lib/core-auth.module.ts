@@ -4,9 +4,24 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { CoreCommonModule } from '@tpf/common';
 import { services } from './use-cases/services';
 import { entities, repositories } from './data-access';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [MikroOrmModule.forFeature(entities), CoreCommonModule],
+  imports: [
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('jwt.secret'),
+        signOptions: {
+          expiresIn: configService.get<string>('jwt.expiration'),
+        },
+      }),
+    }),
+    MikroOrmModule.forFeature(entities),
+    CoreCommonModule,
+  ],
   providers: [...services, ...repositories],
   controllers: [...controllers],
 })

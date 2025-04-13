@@ -10,7 +10,7 @@ services:
       - /usr/src/node_modules
     depends_on:
       - tpf_db
-  
+
   tpf_db:
     image: mysql
     ports:
@@ -21,3 +21,8 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_TCP_PORT: ${DB_PORT}
+    volumes:
+      - tpf_db_data:/var/lib/mysql
+
+volumes:
+  tpf_db_data:
