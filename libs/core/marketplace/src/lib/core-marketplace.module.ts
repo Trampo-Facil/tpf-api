@@ -4,9 +4,10 @@ import { views } from './use-cases/views';
 import { repositories } from './data-access';
 import { providers } from './provider';
 import { controllers } from './presenter';
+import { CoreCommonModule } from '@tpf/common';
 
 @Module({
-  imports: [],
+  imports: [CoreCommonModule],
   controllers: [...controllers],
   providers: [...repositories, ...views, ...services, ...providers],
 })

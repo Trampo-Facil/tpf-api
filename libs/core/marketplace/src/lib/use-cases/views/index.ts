@@ -1,4 +1,5 @@
 import { Provider } from '@nestjs/common';
-import { GetCities } from './get-cities';
+import { GetCitiesByState } from './get-cities-by-state';
+import { GetStates } from './get-states';
 
-export const views: Provider[] = [GetCities];
+export const views: Provider[] = [GetCitiesByState, GetStates];
