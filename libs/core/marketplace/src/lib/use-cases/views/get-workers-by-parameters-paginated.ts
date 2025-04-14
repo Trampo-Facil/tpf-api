@@ -83,11 +83,19 @@ export class GetWorkersByParametersPaginated {
     const { page, limit, ...parameters } = dto;
 
     const [workers, count] =
-      await this.workerRepository.getWorkersByParametersPaginated({
-        ...parameters,
-        page,
-        limit,
-      });
+      await this.workerRepository.getWorkersByParametersPaginated(
+        {
+          ...parameters,
+          page,
+          limit,
+        },
+        [
+          'user',
+          'operationCities',
+          'jobOccupations',
+          'jobOccupations.category',
+        ],
+      );
 
     if (!workers.length) {
       return new NotFoundException(

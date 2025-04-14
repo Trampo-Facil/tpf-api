@@ -2,10 +2,12 @@ import { EntityManager, EntityRepository, FilterQuery } from '@mikro-orm/mysql';
 import { IWorker, Worker } from '../entities';
 import { Injectable } from '@nestjs/common';
 import { GetWorkerByParametersPaginatedDTO } from '../../presenter/dtos';
+import { IRelationshipAutoMap } from '@tpf/common';
 
 export abstract class IWorkerRepository {
   abstract getWorkersByParametersPaginated(
     dto: GetWorkerByParametersPaginatedDTO,
+    populate?: IRelationshipAutoMap<Worker>,
   ): Promise<[Worker[], number]>;
 }
 
@@ -20,6 +22,7 @@ export class WorkerRepository implements IWorkerRepository {
 
   async getWorkersByParametersPaginated(
     dto: GetWorkerByParametersPaginatedDTO,
+    populate?: IRelationshipAutoMap<Worker>,
   ): Promise<[Worker[], number]> {
     const { page, limit } = dto;
 
@@ -28,12 +31,7 @@ export class WorkerRepository implements IWorkerRepository {
     return this._repository.findAndCount(where, {
       limit,
       offset: (page - 1) * limit,
-      populate: [
-        'user',
-        'operationCities',
-        'jobOccupations',
-        'jobOccupations.category',
-      ],
+      populate,
       orderBy: {
         user: {
           name: 'ASC',

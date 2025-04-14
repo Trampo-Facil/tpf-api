@@ -3,4 +3,3 @@ export * from './data-access';
 export * from './utils';
 export * from './data-access';
 export * from './enums';
-export * from './interceptors';
