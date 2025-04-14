@@ -1,1 +1,1 @@
-export * from './associate-cities-into-worker.dto';
+export * from './get-worker-by-parameters-paginated.dto';

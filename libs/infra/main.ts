@@ -15,7 +15,11 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, documentFactory);
 
   app.useGlobalInterceptors(new HttpExceptionReturnInterceptor());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT, () => {

@@ -1,6 +1,6 @@
 export * from './core-common.module';
 export * from './data-access';
-export * from './either';
+export * from './utils';
 export * from './data-access';
 export * from './enums';
 export * from './interceptors';

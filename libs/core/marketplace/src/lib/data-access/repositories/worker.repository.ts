@@ -1,0 +1,67 @@
+import { EntityManager, EntityRepository, FilterQuery } from '@mikro-orm/mysql';
+import { IWorker, Worker } from '../entities';
+import { Injectable } from '@nestjs/common';
+import { GetWorkerByParametersPaginatedDTO } from '../../presenter/dtos';
+
+export abstract class IWorkerRepository {
+  abstract getWorkersByParametersPaginated(
+    dto: GetWorkerByParametersPaginatedDTO,
+  ): Promise<[Worker[], number]>;
+}
+
+@Injectable()
+export class WorkerRepository implements IWorkerRepository {
+  entity = Worker;
+  private _repository: EntityRepository<Worker>;
+
+  constructor(private readonly em: EntityManager) {
+    this._repository = this.em.getRepository(Worker);
+  }
+
+  async getWorkersByParametersPaginated(
+    dto: GetWorkerByParametersPaginatedDTO,
+  ): Promise<[Worker[], number]> {
+    const { page, limit } = dto;
+
+    const where = this.createWhereClause(dto);
+
+    return this._repository.findAndCount(where, {
+      limit,
+      offset: (page - 1) * limit,
+      populate: [
+        'user',
+        'operationCities',
+        'jobOccupations',
+        'jobOccupations.category',
+      ],
+      orderBy: {
+        user: {
+          name: 'ASC',
+        },
+      },
+    });
+  }
+
+  private createWhereClause(dto: GetWorkerByParametersPaginatedDTO) {
+    const whereClause: FilterQuery<IWorker> = {};
+
+    if (dto.name) {
+      whereClause.user = { name: { $like: `%${dto.name}%` } };
+    }
+
+    if (dto.operationCitiesIds) {
+      whereClause.operationCities = { id: { $in: dto.operationCitiesIds } };
+    }
+
+    if (dto.jobOccupationIds) {
+      whereClause.jobOccupations = { id: { $in: dto.jobOccupationIds } };
+    }
+
+    if (dto.jobCategoriyIds)
+      whereClause.jobOccupations = {
+        category: { id: { $in: dto.jobCategoriyIds } },
+      };
+
+    return whereClause;
+  }
+}

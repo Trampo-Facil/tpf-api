@@ -7,7 +7,7 @@ export abstract class IUserRepository {
   abstract save(user: IUser[]): Promise<void>;
   abstract saveWorkerUser(user: IUser, worker: IWorker): Promise<void>;
   abstract findUserByParams(params: Partial<IUser>): Promise<IUser | null>;
-  abstract getUsersByParams(params: Partial<IUser>): Promise<[IUser[], number]>;
+  abstract existsByParams(params: Partial<IUser>): Promise<boolean>;
 }
 
 @Injectable()
@@ -35,7 +35,13 @@ export class UserRepository implements IUserRepository {
     return this._repository.findOne(params);
   }
 
-  getUsersByParams(params: Partial<IUser>): Promise<[IUser[], number]> {
-    return this._repository.findAndCount({ ...params });
+  async existsByParams(params: Partial<IUser>): Promise<boolean> {
+    const conditions = [];
+
+    if (params.email) conditions.push({ email: params.email });
+    if (params.phone) conditions.push({ phone: params.phone });
+
+    const user = await this.em.findOne(User, conditions);
+    return !!user;
   }
 }

@@ -35,12 +35,12 @@ export class RegisterWorker implements IRegisterWorker {
       operationCitiesIds,
     } = dto;
 
-    const [, usersWithSameData] = await this.userRepository.getUsersByParams({
+    const existUserWithSameData = await this.userRepository.existsByParams({
       email,
       phone,
     });
 
-    if (usersWithSameData)
+    if (existUserWithSameData)
       return new ConflictException('Email ou telefone já estão cadastrados');
 
     const [jobOccupations, operationCities] = await Promise.all([
