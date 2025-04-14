@@ -5,7 +5,7 @@ import { IWorkerRepository } from '../../data-access/repositories';
 import { IWorker } from '../../data-access/entities';
 import { IPaginationResponseDTO, PaginationResponseDTO } from '@tpf/common';
 
-export class IGetWorkersByParametersPaginatedResponseDTO {
+export class IGetWorkersByParametersResponseDTO {
   @ApiProperty()
   id!: number;
 
@@ -63,6 +63,14 @@ export class IGetWorkersByParametersPaginatedResponseDTO {
   }
 }
 
+export class IGetWorkersByParametersPaginatedResponseDTO extends PaginationResponseDTO<IGetWorkersByParametersResponseDTO> {
+  @ApiProperty({
+    type: IGetWorkersByParametersResponseDTO,
+    isArray: true,
+  })
+  override data!: IGetWorkersByParametersResponseDTO[];
+}
+
 @Injectable()
 export class GetWorkersByParametersPaginated {
   constructor(private readonly workerRepository: IWorkerRepository) {}
@@ -70,8 +78,7 @@ export class GetWorkersByParametersPaginated {
   async get(
     dto: IGetWorkerByParametersPaginatedDTO,
   ): Promise<
-    | IPaginationResponseDTO<IGetWorkersByParametersPaginatedResponseDTO>
-    | HttpException
+    IPaginationResponseDTO<IGetWorkersByParametersResponseDTO> | HttpException
   > {
     const { page, limit, ...parameters } = dto;
 
@@ -89,11 +96,13 @@ export class GetWorkersByParametersPaginated {
     }
 
     const data = workers.map(
-      (worker) => new IGetWorkersByParametersPaginatedResponseDTO(worker),
+      (worker) => new IGetWorkersByParametersResponseDTO(worker),
     );
 
-    return new PaginationResponseDTO<IGetWorkersByParametersPaginatedResponseDTO>(
-      { data, pages: Math.ceil(count / limit), total: count },
-    );
+    return new PaginationResponseDTO<IGetWorkersByParametersResponseDTO>({
+      data,
+      pages: Math.ceil(count / limit),
+      total: count,
+    });
   }
 }
