@@ -29,7 +29,7 @@ npm install
 
 ### 3. Configure as variáveis de ambiente
 
-Crie o arquivo `.env` com suas configurações locais baseadas nos arquivos `.env.example .env.development`:
+Crie o arquivo `.env` com suas configurações locais.
 
 ### 4. Inicie o Docker
 
