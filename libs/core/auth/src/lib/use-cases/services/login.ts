@@ -31,8 +31,13 @@ export class Login implements ILogin {
       email,
     });
 
+    if (!user)
+      return new NotFoundException(
+        'Dados incorretos. Verifique os dados e tente novamente.',
+      );
+
     const matchPassword = bcrypt.compareSync(password, user.password);
-    if (!user || !matchPassword)
+    if (!matchPassword)
       return new NotFoundException(
         'Dados incorretos. Verifique os dados e tente novamente.',
       );
