@@ -3,6 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { IUserRepository } from '../../data-access/repositories';
 import { ILoginDTO } from '../../presenter/dtos/login.dto';
+import { ApiProperty } from '@nestjs/swagger';
+
+export class ILoginResponseDTO {
+  @ApiProperty()
+  access_token: string;
+}
 
 export abstract class ILogin {
   abstract execute(

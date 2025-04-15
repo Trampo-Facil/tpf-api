@@ -5,6 +5,7 @@ import {
   IGetWorkersByParametersPaginatedResponseDTO,
 } from '../use-cases/views/get-workers-by-parameters-paginated';
 import { ApiResponse } from '@nestjs/swagger';
+import { IGenericExceptionResponseDTO } from '@tpf/common';
 
 @Controller('worker')
 export class WorkerController {
@@ -17,6 +18,11 @@ export class WorkerController {
     status: 200,
     description: 'Get workers by parameters paginated',
     type: IGetWorkersByParametersPaginatedResponseDTO,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Workers not found',
+    type: IGenericExceptionResponseDTO,
   })
   getWorkersByParametersPaginated(
     @Query() dto: GetWorkerByParametersPaginatedDTO,
