@@ -16,9 +16,9 @@ export interface ICreateWorkerEntityDTO {
 
 export abstract class IWorker {
   id!: number;
-  user?: IUser;
-  jobOccupations: Collection<IJobOccupation>;
-  operationCities: Collection<City>;
+  user!: IUser;
+  jobOccupations!: Collection<IJobOccupation>;
+  operationCities!: Collection<City>;
 }
 
 @Entity({ tableName: 'worker' })

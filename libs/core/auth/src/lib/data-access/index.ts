@@ -1,5 +1,4 @@
 import { Provider } from '@nestjs/common';
-import { User, Worker } from './entities';
 import { IUserRepository, UserRepository } from './repositories';
 import {
   IWorkerRepository,
@@ -16,5 +15,3 @@ export const repositories: Provider[] = [
     useClass: WorkerRepository,
   },
 ];
-
-export const entities = [User, Worker];

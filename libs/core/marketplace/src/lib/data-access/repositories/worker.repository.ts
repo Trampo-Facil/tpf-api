@@ -1,5 +1,5 @@
 import { EntityManager, EntityRepository, FilterQuery } from '@mikro-orm/mysql';
-import { IWorker, Worker } from '../entities';
+import { IWorker, Worker } from '@tpf/domain';
 import { Injectable } from '@nestjs/common';
 import { GetWorkerByParametersPaginatedDTO } from '../../presenter/dtos';
 import { IRelationshipAutoMap } from '@tpf/common';
@@ -8,22 +8,21 @@ export abstract class IWorkerRepository {
   abstract getWorkersByParametersPaginated(
     dto: GetWorkerByParametersPaginatedDTO,
     populate?: IRelationshipAutoMap<Worker>,
-  ): Promise<[Worker[], number]>;
+  ): Promise<[IWorker[], number]>;
 }
 
 @Injectable()
 export class WorkerRepository implements IWorkerRepository {
   entity = Worker;
   private _repository: EntityRepository<Worker>;
-
   constructor(private readonly em: EntityManager) {
     this._repository = this.em.getRepository(Worker);
   }
 
   async getWorkersByParametersPaginated(
     dto: GetWorkerByParametersPaginatedDTO,
-    populate?: IRelationshipAutoMap<Worker>,
-  ): Promise<[Worker[], number]> {
+    populate?: IRelationshipAutoMap<IWorker>,
+  ): Promise<[IWorker[], number]> {
     const { page, limit } = dto;
 
     const where = this.createWhereClause(dto);

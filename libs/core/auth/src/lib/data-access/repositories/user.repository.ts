@@ -1,6 +1,6 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
-import { ICreateUserEntityDTO, IUser, IWorker, User } from '../entities';
+import { ICreateUserEntityDTO, IUser, IWorker, User } from '@tpf/domain';
 
 export abstract class IUserRepository {
   abstract create(dto: ICreateUserEntityDTO): IUser;

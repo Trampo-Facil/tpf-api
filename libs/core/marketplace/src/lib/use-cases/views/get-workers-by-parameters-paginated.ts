@@ -2,8 +2,8 @@ import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IGetWorkerByParametersPaginatedDTO } from '../../presenter/dtos';
 import { IWorkerRepository } from '../../data-access/repositories';
-import { IWorker } from '../../data-access/entities';
 import { IPaginationResponseDTO, PaginationResponseDTO } from '@tpf/common';
+import { IWorker } from '@tpf/domain';
 
 export class IGetWorkersByParametersResponseDTO {
   @ApiProperty()

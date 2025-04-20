@@ -3,9 +3,10 @@ import { controllers } from './presenter';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { CoreCommonModule } from '@tpf/common';
 import { services } from './use-cases/services';
-import { entities, repositories } from './data-access';
+import { repositories } from './data-access';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { User, Worker } from '@tpf/domain';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { ConfigService } from '@nestjs/config';
         },
       }),
     }),
-    MikroOrmModule.forFeature(entities),
+    MikroOrmModule.forFeature([Worker, User]),
     CoreCommonModule,
   ],
   providers: [...services, ...repositories],
