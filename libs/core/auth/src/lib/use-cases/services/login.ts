@@ -42,6 +42,10 @@ export class Login implements ILogin {
         'Dados incorretos. Verifique os dados e tente novamente.',
       );
 
+    user.loggedIn();
+
+    await this.userRepository.save(user);
+
     return {
       access_token: await this.jwtService.signAsync({ email }),
     };

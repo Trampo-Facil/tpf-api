@@ -14,8 +14,13 @@ export abstract class IUser {
   abstract email: string;
   abstract phone: string;
   abstract worker?: IWorker;
+  abstract createdAt: Date;
+  abstract updatedAt: Date;
+  abstract lastAccess: Date;
+  abstract enabled: boolean;
 
   abstract setWorker(worker: IWorker): void;
+  abstract loggedIn(): void;
 }
 
 @Entity({ tableName: 'user' })
@@ -41,6 +46,26 @@ export class User implements IUser {
   @OneToOne(() => Worker, { joinColumn: 'worker_id', nullable: true })
   worker?: IWorker;
 
+  @Property({
+    columnType: 'timestamp',
+    defaultRaw: 'CURRENT_TIMESTAMP',
+    onCreate: () => new Date(),
+  })
+  createdAt = new Date();
+
+  @Property({
+    columnType: 'timestamp',
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+  })
+  updatedAt = new Date();
+
+  @Property({ columnType: 'timestamp', nullable: true })
+  lastAccess!: Date;
+
+  @Property({ default: true })
+  enabled = true;
+
   constructor(props: ICreateUserEntityDTO) {
     const { name, password, email, phone } = props;
     this.name = name;
@@ -55,5 +80,9 @@ export class User implements IUser {
 
   setWorker(worker: IWorker) {
     this.worker = worker;
+  }
+
+  loggedIn() {
+    this.lastAccess = new Date();
   }
 }

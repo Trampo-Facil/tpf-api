@@ -4,7 +4,7 @@ import { ICreateUserEntityDTO, IUser, IWorker, User } from '@tpf/domain';
 
 export abstract class IUserRepository {
   abstract create(dto: ICreateUserEntityDTO): IUser;
-  abstract save(user: IUser[]): Promise<void>;
+  abstract save(user: IUser[] | IUser): Promise<void>;
   abstract saveWorkerUser(user: IUser, worker: IWorker): Promise<void>;
   abstract findUserByParams(params: Partial<IUser>): Promise<IUser | null>;
   abstract existsByParams(params: Partial<IUser>): Promise<boolean>;
@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
     return this.entity.create(dto);
   }
 
-  save(user: IUser[]): Promise<void> {
+  save(user: IUser[] | IUser): Promise<void> {
     return this.em.persistAndFlush(user);
   }
 
