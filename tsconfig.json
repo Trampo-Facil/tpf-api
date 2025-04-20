@@ -18,10 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@tpf/common": ["libs/core/common/src"],
-      "@tpf/auth": ["libs/core/auth/src"],
-      "@tpf/marketplace": ["libs/core/marketplace/src"],
       "@tpf/analytics": ["libs/core/analytics/src"],
+      "@tpf/auth": ["libs/core/auth/src"],
+      "@tpf/common": ["libs/core/common/src"],
+      "@tpf/marketplace": ["libs/core/marketplace/src"],
+      "@tpf/domain": ["libs/core/domain/src"]
     }
   },
   "watchOptions": {
