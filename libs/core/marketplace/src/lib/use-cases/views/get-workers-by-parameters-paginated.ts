@@ -10,56 +10,30 @@ export class IGetWorkersByParametersResponseDTO {
   id!: number;
 
   @ApiProperty()
-  name!: string;
-
-  @ApiProperty()
-  phone!: string;
+  user!: { id: number; name: string; email: string; phone: string };
 
   @ApiProperty()
   operationCities!: { id: number; name: string }[];
 
   @ApiProperty()
-  jobCategories!: {
-    id: number;
-    name: string;
-    occupations: { id: number; name: string }[];
-  }[];
+  jobOccupations!: { id: number; name: string }[];
 
   constructor(worker: IWorker) {
     this.id = worker.id;
-    this.name = worker.user.name;
-    this.phone = worker.user.phone;
+    this.user = {
+      id: worker.user.id,
+      name: worker.user.name,
+      email: worker.user.email,
+      phone: worker.user.phone,
+    };
     this.operationCities = worker.operationCities.map((city) => ({
       id: city.id,
       name: city.name,
     }));
-    this.jobCategories = worker.jobOccupations.reduce(
-      (acc, occupation) => {
-        const { category } = occupation;
-        let categoryGroup = acc.find((cat) => cat.id === category.id);
-
-        if (!categoryGroup) {
-          categoryGroup = {
-            id: category.id,
-            name: category.name,
-            occupations: [],
-          };
-          acc.push(categoryGroup);
-        }
-
-        categoryGroup.occupations.push({
-          id: occupation.id,
-          name: occupation.name,
-        });
-
-        return acc;
-      },
-      [] as {
-        id: number;
-        name: string;
-        occupations: { id: number; name: string }[];
-      }[],
-    );
+    this.jobOccupations = worker.jobOccupations.map((occ) => ({
+      id: occ.id,
+      name: occ.name,
+    }));
   }
 }
 

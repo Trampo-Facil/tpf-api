@@ -5,7 +5,6 @@ import {
   MinLength,
   IsEmail,
   IsArray,
-  ArrayNotEmpty,
   IsInt,
   Min,
   IsPhoneNumber,
@@ -45,14 +44,12 @@ export abstract class RegisterWorkerDTO implements IRegisterWorkerDTO {
 
   @ApiProperty({ example: [1, 2, 3] })
   @IsArray()
-  @ArrayNotEmpty()
   @IsInt({ each: true })
   @Min(1, { each: true })
   jobOccupationIds!: number[];
 
   @ApiProperty({ example: [7, 8, 9] })
   @IsArray()
-  @ArrayNotEmpty()
   @IsInt({ each: true })
   @Min(1, { each: true })
   operationCitiesIds!: number[];
