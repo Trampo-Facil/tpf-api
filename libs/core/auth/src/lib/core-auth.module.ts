@@ -16,7 +16,7 @@ import { User, Worker } from '@tpf/domain';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('jwt.secret'),
         signOptions: {
-          expiresIn: configService.get<string>('jwt.expiration'),
+          expiresIn: configService.get('jwt.expiration') as any,
         },
       }),
     }),
